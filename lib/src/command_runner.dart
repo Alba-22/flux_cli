@@ -2,6 +2,7 @@ import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:cli_completion/cli_completion.dart';
 import 'package:defines_cli/src/commands/commands.dart';
+import 'package:defines_cli/src/commands/run_command.dart';
 import 'package:defines_cli/src/version.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:pub_updater/pub_updater.dart';
@@ -41,6 +42,7 @@ class DefinesCliCommandRunner extends CompletionCommandRunner<int> {
     // Add sub commands
     addCommand(SampleCommand(logger: _logger));
     addCommand(UpdateCommand(logger: _logger, pubUpdater: _pubUpdater));
+    addCommand(RunCommand(logger: _logger));
   }
 
   @override
