@@ -34,7 +34,7 @@ class VscodeConfigModel extends Equatable {
 
 class EnvironmentModel extends Equatable {
   final String name;
-  final String args;
+  final List<String> args;
 
   EnvironmentModel({
     required this.name,
@@ -42,9 +42,11 @@ class EnvironmentModel extends Equatable {
   });
 
   factory EnvironmentModel.fromMap(Map<String, dynamic> map) {
+    final args = map["args"].cast<String>();
+
     return EnvironmentModel(
       name: map["name"],
-      args: map["args"].join(" "),
+      args: args,
     );
   }
 
