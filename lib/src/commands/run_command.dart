@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 import 'package:defines_cli/src/utils/check_if_its_a_flutter_project.dart';
+import 'package:defines_cli/src/utils/prompt_for_option.dart';
 import 'package:mason_logger/mason_logger.dart';
 
 import 'package:defines_cli/src/models/vscode_config_model.dart';
@@ -38,27 +39,12 @@ class RunCommand extends Command<int> {
     final envs = await getAllEnvironments();
 
     if (envs.isNotEmpty) {
-      EnvironmentModel selectedEnv;
-
-      if (Platform.isMacOS) {
-        selectedEnv = _logger.chooseOne<EnvironmentModel>("Choose an environment: ", choices: envs, display: (env) => env.name);
-      } else {
-        for (int i = 0; i < envs.length; i++) {
-          print("[${i + 1}] ${envs[i].name}");
-        }
-        int? selectedEnvIndex;
-        do {
-          final response = _logger.prompt("Select environment to run: ");
-          int? parseAttempt = int.tryParse(response);
-          if (parseAttempt != null && parseAttempt > 0 && parseAttempt <= envs.length) {
-            selectedEnvIndex = int.parse(response) - 1;
-          } else {
-            _logger.alert("Invalid environment! Select a number from 1 to ${envs.length}");
-          }
-        } while (selectedEnvIndex == null);
-
-        selectedEnv = envs[selectedEnvIndex];
-      }
+      final selectedEnv = promptForOption<EnvironmentModel>(
+        _logger,
+        "Choose an environment",
+        envs,
+        (choice) => choice.name,
+      );
 
       processArgs.addAll(selectedEnv.args);
     }
