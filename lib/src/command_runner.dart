@@ -1,12 +1,12 @@
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:cli_completion/cli_completion.dart';
-import 'package:defines_cli/src/errors/invalid_launch_file_exception.dart';
-import 'package:defines_cli/src/errors/not_in_a_flutter_project_exception.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:pub_updater/pub_updater.dart';
 
 import 'package:defines_cli/src/commands/commands.dart';
+import 'package:defines_cli/src/errors/invalid_launch_file_exception.dart';
+import 'package:defines_cli/src/errors/not_in_a_flutter_project_exception.dart';
 import 'package:defines_cli/src/version.dart';
 
 const executableName = "defines_cli";
@@ -44,6 +44,7 @@ class DefinesCliCommandRunner extends CompletionCommandRunner<int> {
     // Add sub commands
     addCommand(UpdateCommand(logger: _logger, pubUpdater: _pubUpdater));
     addCommand(RunCommand(logger: _logger));
+    addCommand(BuildCommand(logger: _logger));
   }
 
   @override

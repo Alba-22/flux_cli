@@ -31,6 +31,12 @@ $ defines_cli run
 $ defines_cli run -d <device_id>
 ```
 
+- **run**: build a flutter project getting the dart-defines arguments from .vscode/launch.json
+
+```sh
+$ defines_cli build
+```
+
 - **version**: show CLI version
 
 ```sh
