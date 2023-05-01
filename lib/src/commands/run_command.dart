@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:defines_cli/src/models/vscode_config_model.dart';
 import 'package:mason_logger/mason_logger.dart';
 
+import 'package:defines_cli/src/models/vscode_config_model.dart';
 import 'package:defines_cli/src/utils/get_environment.dart';
 
 class RunCommand extends Command<int> {
@@ -30,6 +30,9 @@ class RunCommand extends Command<int> {
 
   @override
   Future<int> run() async {
+    // TODO: Check if it's a flutter project
+    // e.g. check for pubspec.yaml file
+    // not only this command should verify that
     final List<String> processArgs = ["flutter", "run"];
 
     final envs = await getAllEnvironments();

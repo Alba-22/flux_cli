@@ -1,25 +1,25 @@
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:cli_completion/cli_completion.dart';
-import 'package:defines_cli/src/commands/commands.dart';
-import 'package:defines_cli/src/commands/run_command.dart';
-import 'package:defines_cli/src/version.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:pub_updater/pub_updater.dart';
 
-const executableName = 'defines_cli';
-const packageName = 'defines_cli';
-const description = 'A Very Good Project created by Very Good CLI.';
+import 'package:defines_cli/src/commands/commands.dart';
+import 'package:defines_cli/src/version.dart';
 
-/// {@template defines_cli_command_runner}
+const executableName = "defines_cli";
+const packageName = "defines_cli";
+const description = "A simple CLI for help running and building flutter projects that use dart-defines as its environments variables approach";
+
 /// A [CommandRunner] for the CLI.
 ///
 /// ```
 /// $ defines_cli --version
 /// ```
-/// {@endtemplate}
 class DefinesCliCommandRunner extends CompletionCommandRunner<int> {
-  /// {@macro defines_cli_command_runner}
+  final Logger _logger;
+  final PubUpdater _pubUpdater;
+
   DefinesCliCommandRunner({
     Logger? logger,
     PubUpdater? pubUpdater,
@@ -29,18 +29,17 @@ class DefinesCliCommandRunner extends CompletionCommandRunner<int> {
     // Add root options and flags
     argParser
       ..addFlag(
-        'version',
-        abbr: 'v',
+        "version",
+        abbr: "v",
         negatable: false,
-        help: 'Print the current version.',
+        help: "Print the current version.",
       )
       ..addFlag(
-        'verbose',
-        help: 'Noisy logging, including all shell commands executed.',
+        "verbose",
+        help: "Noisy logging, including all shell commands executed.",
       );
 
     // Add sub commands
-    addCommand(SampleCommand(logger: _logger));
     addCommand(UpdateCommand(logger: _logger, pubUpdater: _pubUpdater));
     addCommand(RunCommand(logger: _logger));
   }
@@ -48,33 +47,33 @@ class DefinesCliCommandRunner extends CompletionCommandRunner<int> {
   @override
   void printUsage() => _logger.info(usage);
 
-  final Logger _logger;
-  final PubUpdater _pubUpdater;
-
   @override
   Future<int> run(Iterable<String> args) async {
     try {
       final topLevelResults = parse(args);
-      if (topLevelResults['verbose'] == true) {
+      if (topLevelResults["verbose"] == true) {
         _logger.level = Level.verbose;
       }
+
       return await runCommand(topLevelResults) ?? ExitCode.success.code;
     } on FormatException catch (e, stackTrace) {
       // On format errors, show the commands error message, root usage and
       // exit with an error code
       _logger
         ..err(e.message)
-        ..err('$stackTrace')
-        ..info('')
+        ..err("$stackTrace")
+        ..info("")
         ..info(usage);
+
       return ExitCode.usage.code;
     } on UsageException catch (e) {
       // On usage errors, show the commands usage message and
       // exit with an error code
       _logger
         ..err(e.message)
-        ..info('')
+        ..info("")
         ..info(e.usage);
+
       return ExitCode.usage.code;
     }
   }
@@ -82,35 +81,36 @@ class DefinesCliCommandRunner extends CompletionCommandRunner<int> {
   @override
   Future<int?> runCommand(ArgResults topLevelResults) async {
     // Fast track completion command
-    if (topLevelResults.command?.name == 'completion') {
+    if (topLevelResults.command?.name == "completion") {
       await super.runCommand(topLevelResults);
+
       return ExitCode.success.code;
     }
 
     // Verbose logs
     _logger
-      ..detail('Argument information:')
-      ..detail('  Top level options:');
+      ..detail("Argument information:")
+      ..detail("  Top level options:");
     for (final option in topLevelResults.options) {
       if (topLevelResults.wasParsed(option)) {
-        _logger.detail('  - $option: ${topLevelResults[option]}');
+        _logger.detail("  - $option: ${topLevelResults[option]}");
       }
     }
     if (topLevelResults.command != null) {
       final commandResult = topLevelResults.command!;
       _logger
-        ..detail('  Command: ${commandResult.name}')
-        ..detail('    Command options:');
+        ..detail("  Command: ${commandResult.name}")
+        ..detail("    Command options:");
       for (final option in commandResult.options) {
         if (commandResult.wasParsed(option)) {
-          _logger.detail('    - $option: ${commandResult[option]}');
+          _logger.detail("    - $option: ${commandResult[option]}");
         }
       }
     }
 
     // Run the command or show version
     final int? exitCode;
-    if (topLevelResults['version'] == true) {
+    if (topLevelResults["version"] == true) {
       _logger.info(packageVersion);
       exitCode = ExitCode.success.code;
     } else {
@@ -134,11 +134,11 @@ class DefinesCliCommandRunner extends CompletionCommandRunner<int> {
       final isUpToDate = packageVersion == latestVersion;
       if (!isUpToDate) {
         _logger
-          ..info('')
+          ..info("")
           ..info(
-            '''
-${lightYellow.wrap('Update available!')} ${lightCyan.wrap(packageVersion)} \u2192 ${lightCyan.wrap(latestVersion)}
-Run ${lightCyan.wrap('$executableName update')} to update''',
+            """
+${lightYellow.wrap("Update available!")} ${lightCyan.wrap(packageVersion)} \u2192 ${lightCyan.wrap(latestVersion)}
+Run ${lightCyan.wrap("$executableName update")} to update""",
           );
       }
     } catch (_) {}

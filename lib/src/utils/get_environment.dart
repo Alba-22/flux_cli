@@ -1,31 +1,16 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import '../models/vscode_config_model.dart';
 
-Future<EnvironmentModel> getEnvironmentFromName(String envName) async {
-  final launchFile = File(".vscode/launch.json");
-
-  final stringContent = await launchFile.readAsString();
-
-  final configs = VscodeConfigModel.fromMap(jsonDecode(stringContent)).configs;
-
-  for (final config in configs) {
-    if (config.name == envName) {
-      return config;
-    }
-  }
-
-  throw Exception();
-}
-
 Future<List<EnvironmentModel>> getAllEnvironments() async {
+  // TODO: Check if launch.json file exists
+  // e.g. CLI must support projects that doesn't have dart-defines approach
+  // In the future, if file doesn't exists, search for equivalent of android studio
+
   final launchFile = File(".vscode/launch.json");
 
   final stringContent = await launchFile.readAsString();
 
-  final configs = VscodeConfigModel.fromMap(jsonDecode(stringContent)).configs;
-
-  return configs;
+  return VscodeConfigModel.fromMap(jsonDecode(stringContent)).configs;
 }

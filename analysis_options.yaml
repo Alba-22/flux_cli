@@ -1,3 +1,43 @@
+analyzer:
+  plugins:
+    - dart_code_metrics
+  exclude:
+    - test/**/*.mocks.dart
+    - "**/*.g.dart"
+
 linter:
   rules:
-    public_member_api_docs: false
+    library_private_types_in_public_api: false
+    avoid_function_literals_in_foreach_calls: false
+
+dart_code_metrics:
+  metrics:
+    cyclomatic-complexity: 20
+    number-of-parameters: 4
+    maximum-nesting-level: 4
+  metrics-exclude:
+    - test/**
+  rules:
+    - avoid-dynamic
+    - avoid-global-state
+    - avoid-missing-enum-constant-in-map
+    - avoid-nested-conditional-expressions
+    - avoid-unnecessary-type-assertions
+    - avoid-unnecessary-type-casts
+    - avoid-unrelated-type-assertions
+    - double-literal-format
+    - newline-before-return
+    - no-boolean-literal-compare
+    - no-empty-block
+    - no-equal-then-else
+    - no-object-declaration
+    - prefer-immediate-return
+    - prefer-match-file-name:
+      exclude:
+        - "**/*_store.dart"
+    - prefer-trailing-comma
+    - always-remove-listener
+    - avoid-border-all
+  anti-patterns:
+    - long-method
+    - long-parameter-list
