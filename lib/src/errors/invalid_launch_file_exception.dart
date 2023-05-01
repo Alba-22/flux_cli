@@ -1,0 +1,1 @@
+class InvalidLaunchFileException implements Exception {}

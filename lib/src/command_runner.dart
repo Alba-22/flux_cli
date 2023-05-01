@@ -1,6 +1,8 @@
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:cli_completion/cli_completion.dart';
+import 'package:defines_cli/src/errors/invalid_launch_file_exception.dart';
+import 'package:defines_cli/src/errors/not_in_a_flutter_project_exception.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:pub_updater/pub_updater.dart';
 
@@ -57,8 +59,6 @@ class DefinesCliCommandRunner extends CompletionCommandRunner<int> {
 
       return await runCommand(topLevelResults) ?? ExitCode.success.code;
     } on FormatException catch (e, stackTrace) {
-      // On format errors, show the commands error message, root usage and
-      // exit with an error code
       _logger
         ..err(e.message)
         ..err("$stackTrace")
@@ -67,14 +67,22 @@ class DefinesCliCommandRunner extends CompletionCommandRunner<int> {
 
       return ExitCode.usage.code;
     } on UsageException catch (e) {
-      // On usage errors, show the commands usage message and
-      // exit with an error code
       _logger
         ..err(e.message)
         ..info("")
         ..info(e.usage);
 
       return ExitCode.usage.code;
+    } on InvalidLaunchFileException {
+      _logger.err("Error parsing launch.json file!");
+      _logger.err("Please check if the file is correctly formatted.");
+
+      return ExitCode.osFile.code;
+    } on NotInAFlutterProjectException {
+      _logger.err("Not in a flutter project!");
+      _logger.err("The run command must be executed inside a flutter project.");
+
+      return ExitCode.osFile.code;
     }
   }
 
