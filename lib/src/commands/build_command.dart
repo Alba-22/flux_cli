@@ -63,7 +63,10 @@ class BuildCommand extends Command<int> {
     final process = await Process.start("fvm", processArgs);
 
     process.stdout.listen((event) {
-      stdout.write(utf8.decode(event));
+      _logger.write(utf8.decode(event));
+    });
+    process.stderr.listen((event) {
+      _logger.err(utf8.decode(event));
     });
 
     await process.stdin.addStream(stdin);
