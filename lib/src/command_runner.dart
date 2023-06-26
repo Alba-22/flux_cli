@@ -4,25 +4,26 @@ import 'package:cli_completion/cli_completion.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:pub_updater/pub_updater.dart';
 
-import 'package:defines_cli/src/commands/commands.dart';
-import 'package:defines_cli/src/errors/invalid_launch_file_exception.dart';
-import 'package:defines_cli/src/errors/not_in_a_flutter_project_exception.dart';
-import 'package:defines_cli/src/version.dart';
+import 'package:flux_cli/src/commands/commands.dart';
+import 'package:flux_cli/src/errors/invalid_launch_file_exception.dart';
+import 'package:flux_cli/src/errors/not_in_a_flutter_project_exception.dart';
+import 'package:flux_cli/src/version.dart';
 
-const executableName = "defines_cli";
-const packageName = "defines_cli";
-const description = "A simple CLI for help running and building flutter projects that use dart-defines as its environments variables approach";
+const executableName = "flux_cli";
+const packageName = "flux_cli";
+const description =
+    "A simple CLI for help running and building flutter projects that use dart-defines as its environments variables approach";
 
 /// A [CommandRunner] for the CLI.
 ///
 /// ```
-/// $ defines_cli --version
+/// $ flux_cli --version
 /// ```
-class DefinesCliCommandRunner extends CompletionCommandRunner<int> {
+class FluxCliCommandRunner extends CompletionCommandRunner<int> {
   final Logger _logger;
   final PubUpdater _pubUpdater;
 
-  DefinesCliCommandRunner({
+  FluxCliCommandRunner({
     Logger? logger,
     PubUpdater? pubUpdater,
   })  : _logger = logger ?? Logger(),

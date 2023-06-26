@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:defines_cli/src/errors/invalid_launch_file_exception.dart';
+import 'package:flux_cli/src/errors/invalid_launch_file_exception.dart';
 
 import '../models/vscode_config_model.dart';
 

@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:defines_cli/src/command_runner.dart';
-import 'package:defines_cli/src/commands/commands.dart';
-import 'package:defines_cli/src/version.dart';
+import 'package:flux_cli/src/command_runner.dart';
+import 'package:flux_cli/src/commands/commands.dart';
+import 'package:flux_cli/src/version.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:pub_updater/pub_updater.dart';
@@ -23,7 +23,7 @@ void main() {
     late PubUpdater pubUpdater;
     late Logger logger;
     late ProcessResult processResult;
-    late DefinesCliCommandRunner commandRunner;
+    late FluxCliCommandRunner commandRunner;
 
     setUp(() {
       final progress = _MockProgress();
@@ -31,7 +31,7 @@ void main() {
       pubUpdater = _MockPubUpdater();
       logger = _MockLogger();
       processResult = _MockProcessResult();
-      commandRunner = DefinesCliCommandRunner(
+      commandRunner = FluxCliCommandRunner(
         logger: logger,
         pubUpdater: pubUpdater,
       );

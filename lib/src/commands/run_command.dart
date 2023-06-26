@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:defines_cli/src/utils/check_if_its_a_flutter_project.dart';
-import 'package:defines_cli/src/utils/prompt_for_option.dart';
+import 'package:flux_cli/src/utils/check_if_its_a_flutter_project.dart';
+import 'package:flux_cli/src/utils/prompt_for_option.dart';
 import 'package:mason_logger/mason_logger.dart';
 
-import 'package:defines_cli/src/models/vscode_config_model.dart';
-import 'package:defines_cli/src/utils/get_environment.dart';
+import 'package:flux_cli/src/models/vscode_config_model.dart';
+import 'package:flux_cli/src/utils/get_environment.dart';
 
 class RunCommand extends Command<int> {
   final Logger _logger;

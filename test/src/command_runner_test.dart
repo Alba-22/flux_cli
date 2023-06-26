@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 import 'package:cli_completion/cli_completion.dart';
-import 'package:defines_cli/src/command_runner.dart';
-import 'package:defines_cli/src/version.dart';
+import 'package:flux_cli/src/command_runner.dart';
+import 'package:flux_cli/src/version.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:pub_updater/pub_updater.dart';
@@ -24,11 +24,11 @@ ${lightYellow.wrap("Update available!")} ${lightCyan.wrap(packageVersion)} \u219
 Run ${lightCyan.wrap("$executableName update")} to update""";
 
 void main() {
-  group("DefinesCliCommandRunner", () {
+  group("FluxxCliCommandRunner", () {
     late PubUpdater pubUpdater;
     late Logger logger;
     late ProcessResult processResult;
-    late DefinesCliCommandRunner commandRunner;
+    late FluxCliCommandRunner commandRunner;
 
     setUp(() {
       pubUpdater = _MockPubUpdater();
@@ -42,7 +42,7 @@ void main() {
       processResult = _MockProcessResult();
       when(() => processResult.exitCode).thenReturn(ExitCode.success.code);
 
-      commandRunner = DefinesCliCommandRunner(
+      commandRunner = FluxCliCommandRunner(
         logger: logger,
         pubUpdater: pubUpdater,
       );
@@ -105,7 +105,7 @@ void main() {
     test(
       "can be instantiated without an explicit analytics/logger instance",
       () {
-        final commandRunner = DefinesCliCommandRunner();
+        final commandRunner = FluxCliCommandRunner();
         expect(commandRunner, isNotNull);
         expect(commandRunner, isA<CompletionCommandRunner<int>>());
       },

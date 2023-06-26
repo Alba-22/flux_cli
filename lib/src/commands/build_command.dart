@@ -7,7 +7,7 @@ import 'package:args/command_runner.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mason_logger/mason_logger.dart';
 
-import 'package:defines_cli/src/utils/get_environment.dart';
+import 'package:flux_cli/src/utils/get_environment.dart';
 
 import '../models/vscode_config_model.dart';
 import '../utils/check_if_its_a_flutter_project.dart';
