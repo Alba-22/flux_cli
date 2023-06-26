@@ -5,6 +5,9 @@ import 'package:mason_logger/mason_logger.dart';
 import 'package:pub_updater/pub_updater.dart';
 
 import 'package:flux_cli/src/commands/commands.dart';
+import 'package:flux_cli/src/commands/deploy_command.dart';
+import 'package:flux_cli/src/errors/building_exception.dart';
+import 'package:flux_cli/src/errors/deploying_exception.dart';
 import 'package:flux_cli/src/errors/invalid_launch_file_exception.dart';
 import 'package:flux_cli/src/errors/not_in_a_flutter_project_exception.dart';
 import 'package:flux_cli/src/version.dart';
@@ -46,6 +49,7 @@ class FluxCliCommandRunner extends CompletionCommandRunner<int> {
     addCommand(UpdateCommand(logger: _logger, pubUpdater: _pubUpdater));
     addCommand(RunCommand(logger: _logger));
     addCommand(BuildCommand(logger: _logger));
+    addCommand(DeployCommand(logger: _logger));
   }
 
   @override
@@ -85,6 +89,14 @@ class FluxCliCommandRunner extends CompletionCommandRunner<int> {
       _logger.err("The run command must be executed inside a flutter project.");
 
       return ExitCode.osFile.code;
+    } on BuildingException catch (e) {
+      _logger.err(e.message);
+
+      return ExitCode.software.code;
+    } on DeployingException catch (e) {
+      _logger.err(e.message);
+
+      return ExitCode.software.code;
     }
   }
 
