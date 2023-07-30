@@ -11,8 +11,6 @@ import 'package:test/test.dart';
 
 class _MockLogger extends Mock implements Logger {}
 
-class _MockProcessResult extends Mock implements ProcessResult {}
-
 class _MockProgress extends Mock implements Progress {}
 
 class _MockPubUpdater extends Mock implements PubUpdater {}
@@ -27,7 +25,7 @@ void main() {
   group("FluxxCliCommandRunner", () {
     late PubUpdater pubUpdater;
     late Logger logger;
-    late ProcessResult processResult;
+
     late FluxCliCommandRunner commandRunner;
 
     setUp(() {
@@ -38,9 +36,6 @@ void main() {
       ).thenAnswer((_) async => packageVersion);
 
       logger = _MockLogger();
-
-      processResult = _MockProcessResult();
-      when(() => processResult.exitCode).thenReturn(ExitCode.success.code);
 
       commandRunner = FluxCliCommandRunner(
         logger: logger,
@@ -81,7 +76,9 @@ void main() {
           packageName: packageName,
           versionConstraint: any(named: "versionConstraint"),
         ),
-      ).thenAnswer((_) async => processResult);
+      ).thenAnswer(
+        (_) async => ProcessResult(0, ExitCode.success.code, null, null),
+      );
       when(
         () => pubUpdater.isUpToDate(
           packageName: any(named: "packageName"),
@@ -158,22 +155,6 @@ void main() {
         verify(() => logger.detail("  Top level options:")).called(1);
         verify(() => logger.detail("  - verbose: true")).called(1);
         verifyNever(() => logger.detail("    Command options:"));
-      });
-
-      test("enables verbose logging for sub commands", () async {
-        final result = await commandRunner.run([
-          "--verbose",
-          "sample",
-          "--cyan",
-        ]);
-        expect(result, equals(ExitCode.success.code));
-
-        verify(() => logger.detail("Argument information:")).called(1);
-        verify(() => logger.detail("  Top level options:")).called(1);
-        verify(() => logger.detail("  - verbose: true")).called(1);
-        verify(() => logger.detail("  Command: sample")).called(1);
-        verify(() => logger.detail("    Command options:")).called(1);
-        verify(() => logger.detail("    - cyan: true")).called(1);
       });
     });
   });

@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:defines_cli/src/errors/building_exception.dart';
-import 'package:defines_cli/src/errors/deploying_exception.dart';
+import 'package:flux_cli/src/errors/building_exception.dart';
+import 'package:flux_cli/src/errors/deploying_exception.dart';
 import 'package:mason_logger/mason_logger.dart';
 
 import '../models/vscode_config_model.dart';
